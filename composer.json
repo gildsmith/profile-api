@@ -16,13 +16,20 @@
         "lorisleiva/laravel-actions": "^2.8"
     },
     "require-dev": {
-        "orchestra/testbench": "^9.0"
+        "orchestra/testbench": "^9.0",
+        "pestphp/pest": "^2.34",
+        "laravel/pint": "^1.15"
     },
     "extra": {
         "laravel": {
             "providers": [
                 "Gildsmith\\ProfileApi\\Providers\\ProfileServiceProvider"
             ]
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
         }
     }
 }
