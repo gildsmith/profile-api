@@ -24,10 +24,15 @@ class ProfileServiceProvider extends ServiceProvider
     {
         $packageBasePath = dirname(__DIR__, 2);
 
-        $this->loadViewsFrom($packageBasePath . '/resources/views', 'gildsmith');
-        $this->publishes([$packageBasePath . '/resources/views' => resource_path('views/vendor/gildsmith')], 'views');
+        $this->loadViewsFrom($packageBasePath.'/resources/views', 'gildsmith');
+        $this->publishes([$packageBasePath.'/resources/views' => resource_path('views/vendor/gildsmith')], 'views');
     }
 
+    /**
+     * Registers a web application for profile management at
+     * the /profile endpoint. It requires the client package
+     * to be installed and compiled.
+     */
     protected function bootWebApplication(): void
     {
         $profileApplication = new WebApplication('profile', 'profile', 'gildsmith::template', [
@@ -36,22 +41,39 @@ class ProfileServiceProvider extends ServiceProvider
 
         Gildsmith::registerWebApplication($profileApplication);
 
-        // todo
-        Route::get('/profile/recovery/{token}', function () use ($profileApplication) {
-            return view('gildsmith::template', ['webapp' => $profileApplication]);
+        $this->registerPasswordRoutes($profileApplication);
+    }
+
+    /**
+     * Registers named routes essential for password recovery,
+     * aligning with Laravel's default authentication mechanisms.
+     * These routes provide links for password reset via emails.
+     */
+    protected function registerPasswordRoutes(WebApplication $app): void
+    {
+        Route::get('/profile/recovery', function () use ($app) {
+            return view('gildsmith::template', ['webapp' => $app]);
+        })->name('password.request');
+
+        Route::get('/profile/recovery/{token}', function () use ($app) {
+            return view('gildsmith::template', ['webapp' => $app]);
         })->name('password.reset');
     }
 
+    /**
+     * Enables specific API features and registers
+     * their corresponding endpoints.
+     */
     protected function bootApiFeatures(): void
     {
         Gildsmith::registerFeatures('authentication', 'registration');
 
         Gildsmith::registerFeatureRoutes('authentication', function () {
-            require dirname(__DIR__, 2) . '/routes/authentication.php';
+            require dirname(__DIR__, 2).'/routes/authentication.php';
         });
 
         Gildsmith::registerFeatureRoutes('registration', function () {
-            require dirname(__DIR__, 2) . '/routes/registration.php';
+            require dirname(__DIR__, 2).'/routes/registration.php';
         });
     }
 }

@@ -9,6 +9,10 @@ use Lorisleiva\Actions\Action;
 use Lorisleiva\Actions\Concerns\AsCommand;
 use Lorisleiva\Actions\Concerns\AsController;
 
+/**
+ * Enables registration of new accounts through
+ * both API endpoint and command line interfaces.
+ */
 class RegisterAccount extends Action
 {
     use AsCommand, AsController;

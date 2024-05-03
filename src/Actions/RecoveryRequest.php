@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Password;
 use Lorisleiva\Actions\Action;
 use Lorisleiva\Actions\Concerns\AsController;
 
+/**
+ * Initiates a password reset process by sending
+ * a reset link to the user's email address provided.
+ */
 class RecoveryRequest extends Action
 {
     use AsController;
