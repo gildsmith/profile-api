@@ -19,15 +19,6 @@ class AuthenticateUser extends Action
         ];
     }
 
-    public function handle(Request $request, string $email, string $password, bool $remember)
-    {
-        if (Auth::attempt(compact('email', 'password'), $remember)) {
-            return $request->user();
-        }
-
-        return false;
-    }
-
     public function asController(Request $request)
     {
         return $this->handle(
@@ -36,5 +27,23 @@ class AuthenticateUser extends Action
             password: $request->input('password'),
             remember: $request->input('remember') ?? false,
         );
+    }
+
+    public function handle(Request $request, string $email, string $password, bool $remember)
+    {
+        if (Auth::attempt(compact('email', 'password'), $remember)) {
+            return $request->user();
+        }
+
+        return response()->json($this->error(), 403);
+    }
+
+    public function error(): array
+    {
+        return [
+            'errors' => [
+                'password' => ['The provided credentials do not match our records.']
+            ]
+        ];
     }
 }
