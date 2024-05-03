@@ -24,8 +24,8 @@ class ProfileServiceProvider extends ServiceProvider
     {
         $packageBasePath = dirname(__DIR__, 2);
 
-        $this->loadViewsFrom($packageBasePath.'/resources/views', 'gildsmith');
-        $this->publishes([$packageBasePath.'/resources/views' => resource_path('views/vendor/gildsmith')], 'views');
+        $this->loadViewsFrom($packageBasePath . '/resources/views', 'gildsmith');
+        $this->publishes([$packageBasePath . '/resources/views' => resource_path('views/vendor/gildsmith')], 'views');
     }
 
     /**
@@ -35,9 +35,13 @@ class ProfileServiceProvider extends ServiceProvider
      */
     protected function bootWebApplication(): void
     {
-        $profileApplication = new WebApplication('profile', 'profile', 'gildsmith::template', [
-            'app_path' => 'node_modules/@gildsmith/profile-client/src/app.js',
-        ]);
+        $profileApplication = new WebApplication(
+            identifier: 'profile',
+            route: 'profile',
+            template: 'gildsmith.template',
+            params: [
+                'app_path' => 'node_modules/@gildsmith/profile-client/src/app.js',
+            ]);
 
         Gildsmith::registerWebApplication($profileApplication);
 
@@ -69,11 +73,11 @@ class ProfileServiceProvider extends ServiceProvider
         Gildsmith::registerFeatures('authentication', 'registration');
 
         Gildsmith::registerFeatureRoutes('authentication', function () {
-            require dirname(__DIR__, 2).'/routes/authentication.php';
+            require dirname(__DIR__, 2) . '/routes/authentication.php';
         });
 
         Gildsmith::registerFeatureRoutes('registration', function () {
-            require dirname(__DIR__, 2).'/routes/registration.php';
+            require dirname(__DIR__, 2) . '/routes/registration.php';
         });
     }
 }
