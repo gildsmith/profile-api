@@ -22,6 +22,7 @@ class LogoutUser extends Action
     public function asController(Request $request): JsonResponse
     {
         $this->handle($request);
+
         return response()->json(null, 204);
     }
 }

@@ -22,7 +22,7 @@ class ChangePassword extends Action
     {
         return [
             'password' => ['required', 'string', 'current_password'],
-            'new_password' => ['required', 'string', 'min:8', 'confirmed']
+            'new_password' => ['required', 'string', 'min:8', 'confirmed'],
         ];
     }
 
