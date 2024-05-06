@@ -37,7 +37,7 @@ class AuthenticateUser extends Action
             : response()->json($this->error(), 403);
     }
 
-    public function handle(string $email, string $password, bool $remember): bool
+    public function handle(string $email, string $password, bool $remember = false): bool
     {
         return Auth::attempt(compact('email', 'password'), $remember);
     }
