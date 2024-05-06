@@ -1,6 +1,8 @@
 <?php
 
 use Gildsmith\ProfileApi\Actions\AuthenticateUser;
+use Gildsmith\ProfileApi\Actions\ChangePassword;
+use Gildsmith\ProfileApi\Actions\LogoutUser;
 use Gildsmith\ProfileApi\Actions\RecoveryCompletion;
 use Gildsmith\ProfileApi\Actions\RecoveryRequest;
 use Illuminate\Http\Request;
@@ -17,6 +19,9 @@ Route::get('user', function (Request $request) {
 });
 
 Route::post('login', AuthenticateUser::class);
+Route::post('logout', LogoutUser::class);
 
 Route::post('recovery', RecoveryRequest::class);
 Route::post('recovery/{token}', RecoveryCompletion::class);
+
+Route::post('password', ChangePassword::class);

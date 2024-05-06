@@ -4,6 +4,9 @@ namespace Gildsmith\ProfileApi\Providers;
 
 use Gildsmith\HubApi\Facades\Gildsmith;
 use Gildsmith\HubApi\Router\Web\WebApplication;
+use Gildsmith\ProfileApi\Listeners\SendPasswordChangeNotification;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -14,6 +17,7 @@ class ProfileServiceProvider extends ServiceProvider
         $this->bootResources();
         $this->bootWebApplication();
         $this->bootApiFeatures();
+        $this->bootListeners();
     }
 
     /**
@@ -56,11 +60,11 @@ class ProfileServiceProvider extends ServiceProvider
     protected function registerPasswordRoutes(WebApplication $app): void
     {
         Route::get('/profile/recovery', function () use ($app) {
-            return view('gildsmith::template', ['webapp' => $app]);
+            return view('gildsmith.template', ['webapp' => $app]);
         })->name('password.request');
 
         Route::get('/profile/recovery/{token}', function () use ($app) {
-            return view('gildsmith::template', ['webapp' => $app]);
+            return view('gildsmith.template', ['webapp' => $app]);
         })->name('password.reset');
     }
 
@@ -79,5 +83,11 @@ class ProfileServiceProvider extends ServiceProvider
         Gildsmith::registerFeatureRoutes('registration', function () {
             require dirname(__DIR__, 2) . '/routes/registration.php';
         });
+    }
+
+    /** TODO */
+    protected function bootListeners(): void
+    {
+        Event::listen(PasswordReset::class, SendPasswordChangeNotification::class);
     }
 }
