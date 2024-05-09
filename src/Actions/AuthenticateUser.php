@@ -50,7 +50,7 @@ class AuthenticateUser extends Action
     {
         return [
             'errors' => [
-                'password' => ['The provided credentials do not match our records.'],
+                'password' => [__('auth.failed')],
             ],
         ];
     }
