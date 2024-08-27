@@ -16,11 +16,13 @@
         "php": "^8.3",
         "lorisleiva/laravel-actions": "^2.8",
         "laravel/sanctum": "^4.0",
-        "gildsmith/hub-api": "dev-master"
+        "gildsmith/hub-api": "dev-master",
+        "laravel/pennant": "^1.11"
     },
     "require-dev": {
         "orchestra/testbench": "^9.0",
-        "laravel/pint": "^1.15"
+        "laravel/pint": "^1.15",
+        "pestphp/pest": "^2.35"
     },
     "extra": {
         "laravel": {

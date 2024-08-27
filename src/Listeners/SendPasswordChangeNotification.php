@@ -11,7 +11,7 @@ class SendPasswordChangeNotification
     public function handle(PasswordReset $event): void
     {
         if (in_array(Notifiable::class, class_uses_recursive($event->user))) {
-            $event->user->notify(new PasswordChanged());
+            $event->user->notify(new PasswordChanged);
         }
     }
 }

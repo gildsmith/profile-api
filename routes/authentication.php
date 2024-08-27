@@ -15,9 +15,7 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::get('user', function (Request $request) {
-    $user = $request->user();
-    $user?->load('role');
-    return $user ?? [];
+    return $request->user()?->load('role') ?? [];
 });
 
 Route::post('login', AuthenticateUser::class);

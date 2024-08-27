@@ -9,6 +9,7 @@ use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Pennant\Feature;
 
 class ProfileServiceProvider extends ServiceProvider
 {
@@ -74,13 +75,14 @@ class ProfileServiceProvider extends ServiceProvider
      */
     protected function bootApiFeatures(): void
     {
-        Gildsmith::registerFeatures('authentication', 'registration');
+        Feature::define('authentication', fn () => true);
+        Feature::define('registration', fn () => true);
 
-        Gildsmith::registerFeatureRoutes('authentication', function () {
+        Gildsmith::registerFeature('authentication', function () {
             require dirname(__DIR__, 2).'/routes/authentication.php';
         });
 
-        Gildsmith::registerFeatureRoutes('registration', function () {
+        Gildsmith::registerFeature('registration', function () {
             require dirname(__DIR__, 2).'/routes/registration.php';
         });
     }

@@ -16,7 +16,7 @@ class PasswordChanged extends Notification
     /** @noinspection PhpUnused */
     public function toMail(): MailMessage
     {
-        return (new MailMessage())
+        return (new MailMessage)
             ->subject(Lang::get('Password Changed Notification'))
             ->line(Lang::get('You are receiving this email because your password has been changed.'))
             ->line(Lang::get('If you did not initiate this change, head to the following link and change your password immediately.'))
