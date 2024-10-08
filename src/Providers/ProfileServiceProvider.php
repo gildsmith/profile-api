@@ -3,7 +3,6 @@
 namespace Gildsmith\ProfileApi\Providers;
 
 use Gildsmith\CoreApi\Facades\Gildsmith;
-use Gildsmith\CoreApi\Models\User;
 use Gildsmith\CoreApi\Router\Web\WebAppBuilder;
 use Gildsmith\ProfileApi\Listeners\SendPasswordChangeNotification;
 use Illuminate\Auth\Events\PasswordReset;
@@ -90,8 +89,9 @@ class ProfileServiceProvider extends ServiceProvider
 
     /**
      * Helper function to build paths from the package root.
-     */    private function packagePath(string $path): string
+     */
+    private function packagePath(string $path): string
     {
-        return dirname(__DIR__, 2) . '/' . $path;
+        return dirname(__DIR__, 2).'/'.$path;
     }
 }
