@@ -578,7 +578,7 @@
             "time": "2023-10-12T05:21:21+00:00"
         },
         {
-            "name": "gildsmith/hub-api",
+            "name": "gildsmith/core-api",
             "version": "dev-master",
             "source": {
                 "type": "git",
@@ -10204,7 +10204,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "gildsmith/hub-api": 20
+        "gildsmith/core-api": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

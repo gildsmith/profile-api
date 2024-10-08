@@ -19,7 +19,7 @@ composer require gildsmith/profile-api
 For integrating the web interface, install the corresponding client package:
 
 ```
-npm i @gildsmith/profile-client
+npm i @gildsmith/profile-web
 ```
 
 ### 🤝 Contribution

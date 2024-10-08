@@ -16,7 +16,7 @@
         "php": "^8.3",
         "lorisleiva/laravel-actions": "^2.8",
         "laravel/sanctum": "^4.0",
-        "gildsmith/hub-api": "dev-master",
+        "gildsmith/core-api": "dev-master",
         "laravel/pennant": "^1.11"
     },
     "require-dev": {

@@ -2,8 +2,9 @@
 
 namespace Gildsmith\ProfileApi\Providers;
 
-use Gildsmith\HubApi\Facades\Gildsmith;
-use Gildsmith\HubApi\Router\Web\WebApplication;
+use Gildsmith\CoreApi\Facades\Gildsmith;
+use Gildsmith\CoreApi\Models\User;
+use Gildsmith\CoreApi\Router\Web\WebAppBuilder;
 use Gildsmith\ProfileApi\Listeners\SendPasswordChangeNotification;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Event;
@@ -13,6 +14,7 @@ use Laravel\Pennant\Feature;
 
 class ProfileServiceProvider extends ServiceProvider
 {
+    /** NO COMMENT */
     public function boot(): void
     {
         $this->bootResources();
@@ -27,10 +29,8 @@ class ProfileServiceProvider extends ServiceProvider
      */
     public function bootResources(): void
     {
-        $packageBasePath = dirname(__DIR__, 2);
-
-        $this->loadViewsFrom($packageBasePath.'/resources/views', 'gildsmith');
-        $this->publishes([$packageBasePath.'/resources/views' => resource_path('views/vendor/gildsmith')], 'views');
+        $this->loadViewsFrom($this->packagePath('resources/views'), 'gildsmith');
+        $this->publishes([$this->packagePath('resources/views') => resource_path('views/vendor/gildsmith')], 'views');
     }
 
     /**
@@ -40,17 +40,12 @@ class ProfileServiceProvider extends ServiceProvider
      */
     protected function bootWebApplication(): void
     {
-        $profileApplication = new WebApplication(
-            identifier: 'profile',
-            route: 'profile',
-            template: 'gildsmith.template',
-            params: [
-                'app_path' => 'node_modules/@gildsmith/profile-client/src/app.js',
-            ]);
+        $app = Gildsmith::app('profile')
+            ->route('profile')
+            ->template('gildsmith::profile')
+            ->param('app_path', 'node_modules/@gildsmith/profile-web/src/app.js');
 
-        Gildsmith::registerWebApplication($profileApplication);
-
-        $this->registerPasswordRoutes($profileApplication);
+        $this->registerPasswordRoutes($app);
     }
 
     /**
@@ -58,7 +53,7 @@ class ProfileServiceProvider extends ServiceProvider
      * aligning with Laravel's default authentication mechanisms.
      * These routes provide links for password reset via emails.
      */
-    protected function registerPasswordRoutes(WebApplication $app): void
+    protected function registerPasswordRoutes(WebAppBuilder $app): void
     {
         Route::get('/profile/recovery', function () use ($app) {
             return view('gildsmith.template', ['webapp' => $app]);
@@ -75,21 +70,28 @@ class ProfileServiceProvider extends ServiceProvider
      */
     protected function bootApiFeatures(): void
     {
-        Feature::define('authentication', fn () => true);
-        Feature::define('registration', fn () => true);
+        Feature::define('authentication', true);
+        Feature::define('registration', true);
 
-        Gildsmith::registerFeature('authentication', function () {
-            require dirname(__DIR__, 2).'/routes/authentication.php';
-        });
+        Gildsmith::feature('authentication')
+            ->file($this->packagePath('routes/authentication.php'))
+            ->flagged();
 
-        Gildsmith::registerFeature('registration', function () {
-            require dirname(__DIR__, 2).'/routes/registration.php';
-        });
+        Gildsmith::feature('registration')
+            ->file($this->packagePath('routes/registration.php'))
+            ->flagged();
     }
 
-    /** TODO */
+    /** Register listeners */
     protected function bootListeners(): void
     {
         Event::listen(PasswordReset::class, SendPasswordChangeNotification::class);
+    }
+
+    /**
+     * Helper function to build paths from the package root.
+     */    private function packagePath(string $path): string
+    {
+        return dirname(__DIR__, 2) . '/' . $path;
     }
 }
